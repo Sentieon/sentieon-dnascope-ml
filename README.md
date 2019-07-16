@@ -1,3 +1,7 @@
+
+<a href="https://www.sentieon.com/">		<img src="https://www.sentieon.com/wp-content/uploads/2017/05/cropped-companylogo.png"  alt="Sentieon" width="25%" >	</a>
+
+
 # DNAscope Machine Learning Model 
 
 **A machine learning model for accurate and efficient germline small-variants detection**
