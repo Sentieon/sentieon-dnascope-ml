@@ -6,7 +6,7 @@
 
 **A machine learning model for accurate and efficient germline small-variants detection**
  
-Sentieon DNAscope combines the robust and well-established preprocessing and assembly mathematics of the GATK’s HaplotypeCaller with a machine-learned genotyping model, achieving comparable SNP accuracy and superior insertion/deletion accuracy to existing tools with reduced computational cost.
+Sentieon DNAscope combines the robust and well-established preprocessing and assembly mathematics of the GATK’s HaplotypeCaller with a machine-learned genotyping model, achieving comparable SNP accuracy and superior insertion/deletion accuracy to state-of-the-art tools with reduced computational cost.
 
 ## Goal of a machine learning model in DNAscope
 
@@ -27,11 +27,40 @@ Sentieon can provide you with a model trained using a subset of the data from th
 
 ![pipeline](https://github.com/Sentieon/sentieon-dnascope-ml/blob/master/dnascope-pipeline.png)
 
+![Alt text](https://g.gravizo.com/source/custom_mark1?https://raw.githubusercontent.com/Sentieon/sentieon-dnascope-ml/master/README.md)
+<details> 
+<summary></summary>
+ custom_mark1
+  digraph G {
+        size ="8,8"
+        rankdir="LR"
+        "fastq" [color=blue shape=box]
+        "BAM" [color=blue shape=box]
+        "intermediate VCF" [color=blue shape=box]
+        "VCF" [color=blue shape=box]
+        "fastq" -> "bwa-mem + dedup"
+        "bwa-mem + dedup" -> "BAM"
+        "BAM" -> "DNAscope"
+        "DNAscope" -> "intermediate VCF"
+        "intermediate VCF" -> "DNAModelApply"
+        "DNAModelApply" -> "VCF"
+}
+ custom_mark1
+</details>
 
 ### Running DNAscope on-premises
 #### FASTQ -> BAM -> VCF
 
-1. location of input files
+1. Sentieon license
+
+   Update Sentieon packages location and license file in `dnascope.sh`.
+   ```bash
+   export SENTIEON_INSTALL_DIR=/home/release/sentieon-genomics-201808.06 #your Sentieon package location
+   export SENTIEON_LICENSE=/home/bundle/sentieon.lic #your license file location
+   ```
+   If you do not have a Sentieon license/package yet, please feel free to request free trial by filling out the [form](https://www.sentieon.com/home/free-trial/). Alternatively, you could run this pipeline on Google Cloud or AWS. A 14 days free trial license will be automatically applied to your account.
+   
+2. location of input files
 
    Before running, you need to provide set the following variables in `dnascope.sh`.  
    - `fastq_folder`: fastq file(s) folder
@@ -45,15 +74,6 @@ Sentieon can provide you with a model trained using a subset of the data from th
    - `PCRFREE`: boolean to indicate whether the sample is PCR Free or not. Set to `true` for PCR Free samples. 
    -  `fasta`: reference file 
    -  `dbsnp`: dbSNP file
-
-2. Sentieon license
-
-   Update Sentieon packages location and license file in `dnascope.sh`.
-   ```bash
-   export SENTIEON_INSTALL_DIR=/home/release/sentieon-genomics-201808.06 #your Sentieon package location
-   export SENTIEON_LICENSE=/home/bundle/sentieon.lic #your license file location
-   ```
-   If you do not have a Sentieon license yet, please feel free to request free trial by filling out the [form](https://www.sentieon.com/home/free-trial/). Alternatively, you could run this pipeline on Google Cloud or AWS. A 14 days free trial license will be automatically applied to your account.
     
 3. Running the pipeline
  
@@ -77,10 +97,10 @@ You could access these data from our google cloud bucket:
 
  File |Location  |
  --|--|
- Reference Genome  |`gs://sentieon-test/pipeline_test/reference/`   |
- precisionFDA Truth Challenge HG002 FASTQs|`gs://sentieon-dnascope-model/data/`|
- DNAscope Model| `gs://sentieon-dnascope-model/models/SentieonModelBeta0.4a.model`| 
- Truth VCF and Bed files | `gs://sentieon-dnascope-model/truth/` |
+ Reference Genome  |[`gs://sentieon-test/pipeline_test/reference/`](https://console.cloud.google.com/storage/browser/sentieon-test/pipeline_test/reference/)   |
+ precisionFDA Truth Challenge HG002 FASTQs| [`gs://sentieon-dnascope-model/data/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model/data/)|
+ DNAscope Model| [`gs://sentieon-dnascope-model/models/SentieonModelBeta0.4a.model`](https://console.cloud.google.com/storage/browser/_details/sentieon-dnascope-model/models/SentieonModelBeta0.4a.model)| 
+ Truth VCF and Bed files | [`gs://sentieon-dnascope-model/truth/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model/truth/) |
 
 
 
@@ -93,17 +113,18 @@ HAPPY="/opt/hap.py/bin/hap.py"
 OUTPREFIX="happy_eval"
 $HAPPY truth.vcf query.vcf -f truth.bed -o $OUTPREFIX -r hs37d5.fa --engine=vcfeval --engine-vcfeval-template hs37d5.sdf
 ```
-You could find DNAscope output as well as the hap.py evaluation results published on Google Storage Buckets`gs://sentieon-dnascope-model/`
+You could find DNAscope output as well as the hap.py evaluation results published on Google Storage Buckets [`gs://sentieon-dnascope-model/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model)
 under `output/` and `happy_eval/` directories.  
 
-Type | TP | FN | FP | Recall | Precision | F1_score | 
-------| ----| ----| ----| --------| -----------| ---| 
-SNP   |3046378 | **1459** | **700** | 0.999521 | 0.99977 | **0.999646** | 
-INDEL |463754| **1010** | **685** | 0.997827 | 0.998585 | **0.998206** | 
+Type | TP | FN | FP | Recall | Precision | F1_score | precisionFDA Truth Challenge Winning Fscore* | 
+------| ----| ----| ----| --------| -----------| ---| --------------------------------------------|
+SNP   |3046378 | **1459** | **700** | 0.999521 | 0.99977 | **99.9646%** | 99.9587% | 
+INDEL |463754| **1010** | **685** | 0.997827 | 0.998585 | **99.8206%** | 99.4009%|
 
+\*precisionFDA Truth Challege Result taken from https://precision.fda.gov/challenges/truth/results
 
 ###  Runtime 
-PrecisionFDA HG002 50X sample on 64-Core Machine: 
+PrecisionFDA HG002 50X sample on 64-Core Machine(n1-highcpu-64): 
 
 Pipeline | Step | Wall time | 
 ---|-----| ---------| 
