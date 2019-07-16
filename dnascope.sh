@@ -9,7 +9,7 @@
 fastq_folder="/home/pipeline/samples"
 fastq_1="1.fastq.gz"
 fastq_2="2.fastq.gz" #If using Illumina paired data
-model="/net/c1n18/data/user/renke/DNAscope_models/SentieonModelBeta0.4a.model" #DNAscope model file 
+model="SentieonModelBeta0.4a.model" #DNAscope model file 
 sample="sample_name"
 group="read_group_name"
 platform="ILLUMINA"
