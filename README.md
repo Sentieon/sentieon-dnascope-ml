@@ -21,6 +21,8 @@ Sentieon can provide you with a model trained using a subset of the data from th
 
 ## DNAscope machine learning pipeline
 
+![pipeline](https://github.com/Sentieon/sentieon-dnascope-ml/blob/master/dnascope-pipeline.png)
+
 
 ### Running DNAscope on-premises
 #### FASTQ -> BAM -> VCF
