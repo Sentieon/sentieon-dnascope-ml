@@ -13,7 +13,7 @@ Sentieon DNAscope combines the robust and well-established preprocessing and ass
 
 From Sentieon software version 201808.01 onwards, DNAscope allows you to use a model to perform variant calling with higher accuracy by improving the candidate detection and filtering.
 
-Sentieon can provide you with a model trained using a subset of the data from the GIAB truth-set found in [https://github.com/genome-in-a-bottle](https://github.com/genome-in-a-bottle). The model was created by processing samples HG001 and HG005 through a pipeline consisting of Sentieon BWA-mem alignment and Sentieon deduplication, and using the variant calling results to calibrate a model to fit the truth-set. Sentieon also provides DNAscope model training tool for you to create your own model based on proprietary data. 
+Sentieon can provide you with a model trained using a subset of the data from the GIAB truth-set found in [https://github.com/genome-in-a-bottle](https://github.com/genome-in-a-bottle). The model was created by processing samples HG001 and HG005 through a pipeline consisting of Sentieon BWA-mem alignment and Sentieon deduplication, and using the variant calling results to calibrate a model to fit the truth-set. Sentieon also provides DNAscope model training tool for you to create your model based on your own data. 
 
 ## Highlights
 
