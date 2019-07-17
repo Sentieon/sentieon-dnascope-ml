@@ -27,27 +27,6 @@ Sentieon can provide you with a model trained using a subset of the data from th
 
 ![pipeline](https://github.com/Sentieon/sentieon-dnascope-ml/blob/master/dnascope-pipeline.png)
 
-![Alt text](https://g.gravizo.com/source/custom_mark1?https%3A%2F%2Fraw.githubusercontent.com%2FSentieon%2Fsentieon-dnascope-ml%2Fmaster%2FREADME.md)
-<details> 
-<summary></summary>
- custom_mark1
-  digraph G {
-        size ="8,8"
-        rankdir="LR"
-        "fastq" [color=blue shape=box]
-        "BAM" [color=blue shape=box]
-        "intermediate VCF" [color=blue shape=box]
-        "VCF" [color=blue shape=box]
-        "fastq" -> "bwa-mem + dedup"
-        "bwa-mem + dedup" -> "BAM"
-        "BAM" -> "DNAscope"
-        "DNAscope" -> "intermediate VCF"
-        "intermediate VCF" -> "DNAModelApply"
-        "DNAModelApply" -> "VCF"
-}
- custom_mark1
-</details>
-
 ### Running DNAscope on-premises
 #### FASTQ -> BAM -> VCF
 
@@ -60,7 +39,7 @@ Sentieon can provide you with a model trained using a subset of the data from th
    ```
    If you do not have a Sentieon license/package yet, please feel free to request free trial by filling out the [form](https://www.sentieon.com/home/free-trial/). Alternatively, you could run this pipeline on Google Cloud or AWS. A 14 days free trial license will be automatically applied to your account.
    
-2. location of input files
+2. Location of input files
 
    Before running, you need to provide set the following variables in `dnascope.sh`.  
    - `fastq_folder`: fastq file(s) folder
