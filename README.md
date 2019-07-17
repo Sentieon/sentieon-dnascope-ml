@@ -27,7 +27,7 @@ Sentieon can provide you with a model trained using a subset of the data from th
 
 ![pipeline](https://github.com/Sentieon/sentieon-dnascope-ml/blob/master/dnascope-pipeline.png)
 
-![Alt text](https://g.gravizo.com/source/custom_mark1?https://raw.githubusercontent.com/Sentieon/sentieon-dnascope-ml/master/README.md)
+![Alt text](https://g.gravizo.com/source/custom_mark1?https%3A%2F%2Fraw.githubusercontent.com%2FSentieon%2Fsentieon-dnascope-ml%2Fmaster%2FREADME.md)
 <details> 
 <summary></summary>
  custom_mark1
