@@ -6,7 +6,7 @@
 
 **A machine learning model for accurate and efficient germline small-variants detection**
  
-Sentieon DNAscope combines the robust and well-established preprocessing and assembly mathematics of the GATK’s HaplotypeCaller with a machine-learned genotyping model, achieving comparable SNP accuracy and superior insertion/deletion accuracy to state-of-the-art tools with reduced computational cost.
+Sentieon DNAscope combines the robust and well-established preprocessing and assembly mathematics of the GATK’s HaplotypeCaller with a machine-learned genotyping model, achieving superb SNP and insertion/deletion accuracy as compared to state-of-the-art tools, while using much reduced computational cost.
 
 ## Goal of a machine learning model in DNAscope
 
@@ -41,7 +41,7 @@ Sentieon can provide you with a model trained using a subset of the data from th
    
 2. Location of input files
 
-   Before running, you need to provide set the following variables in `dnascope.sh`.  
+   Before running, you need to set the following variables in `dnascope.sh`.  
    - `fastq_folder`: fastq file(s) folder
 
    - `fastq_1`: fastq file name
@@ -61,9 +61,9 @@ Sentieon can provide you with a model trained using a subset of the data from th
    ```
 
 
- If you have any further question, please refer to [Sentieon Appnotes for DNAscope Machine Learning Model](https://support.sentieon.com/appnotes/dnascope_ml/) and [DNA pipeline running examples in the manual](https://support.sentieon.com/manual/examples/examples/).
+ If you have any further question, please refer to [Sentieon's Appnotes for DNAscope Machine Learning Model](https://support.sentieon.com/appnotes/dnascope_ml/) and [DNAseq pipeline example script](https://support.sentieon.com/manual/examples/examples/) in the manual.
 
-## Performance on Whole Genome Sequencing(WGS) data 
+## Performance on Whole Genome Sequencing (WGS) data 
 Here we demonstrate DNAscope's performance on PrecisionFDA Truth Challenge HG002 sample. 
 
 ### Data source 
@@ -77,7 +77,7 @@ You could access these data from our google cloud bucket:
  File |Location  |
  --|--|
  Reference Genome  |[`gs://sentieon-test/pipeline_test/reference/`](https://console.cloud.google.com/storage/browser/sentieon-test/pipeline_test/reference/)   |
- precisionFDA Truth Challenge HG002 FASTQs| [`gs://sentieon-dnascope-model/data/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model/data/)|
+ PrecisionFDA Truth Challenge HG002 FASTQs| [`gs://sentieon-dnascope-model/data/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model/data/)|
  DNAscope Model| [`gs://sentieon-dnascope-model/models/SentieonModelBeta0.4a.model`](https://console.cloud.google.com/storage/browser/_details/sentieon-dnascope-model/models/SentieonModelBeta0.4a.model)| 
  Truth VCF and Bed files | [`gs://sentieon-dnascope-model/truth/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model/truth/) |
 
@@ -85,7 +85,7 @@ You could access these data from our google cloud bucket:
 
 ### Variant Calling Performance
 
-We use hap.py([https://github.com/Illumina/hap.py](https://github.com/Illumina/hap.py)) for variants evaluation.
+We use hap.py ([https://github.com/Illumina/hap.py](https://github.com/Illumina/hap.py)) for variants evaluation.
 
 ```bash
 HAPPY="/opt/hap.py/bin/hap.py"
@@ -95,19 +95,19 @@ $HAPPY truth.vcf query.vcf -f truth.bed -o $OUTPREFIX -r hs37d5.fa --engine=vcfe
 You could find DNAscope output as well as the hap.py evaluation results published on Google Storage Buckets [`gs://sentieon-dnascope-model/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model)
 under `output/` and `happy_eval/` directories.  
 
-Type | TP | FN | FP | Recall | Precision | F1_score | precisionFDA Truth Challenge Winning Fscore* | 
+Type | TP | FN | FP | Recall | Precision | F1_score | PrecisionFDA Truth Challenge Winning Fscore* | 
 ------| ----| ----| ----| --------| -----------| ---| --------------------------------------------|
 SNP   |3046378 | **1459** | **700** | 0.999521 | 0.99977 | **99.9646%** | 99.9587% | 
 INDEL |463754| **1010** | **685** | 0.997827 | 0.998585 | **99.8206%** | 99.4009%|
 
-\*precisionFDA Truth Challege Result taken from https://precision.fda.gov/challenges/truth/results
+*\*PrecisionFDA Truth Challege Result taken from https://precision.fda.gov/challenges/truth/results*
 
 ###  Runtime 
-PrecisionFDA HG002 50X sample on 64-Core Machine(n1-highcpu-64): 
+PrecisionFDA HG002 50X sample on 64-vCPU Machine(n1-highcpu-64): 
 
 Pipeline | Step | Wall time | 
 ---|-----| ---------| 
-fastq -> bam | BWA-MEM + dedup | 3h | 
+fastq -> bam | Sentieon-BWA-MEM + dedup | 3h | 
 bam -> VCF | DNAscope + ModelApply | 1h33m | 
 
 
