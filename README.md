@@ -37,7 +37,7 @@ Sentieon can provide you with a model trained using a subset of the data from th
    export SENTIEON_INSTALL_DIR=/home/release/sentieon-genomics-201808.06 #your Sentieon package location
    export SENTIEON_LICENSE=/home/bundle/sentieon.lic #your license file location
    ```
-   If you do not have a Sentieon license/package yet, please feel free to request free trial by filling out the [form](https://www.sentieon.com/home/free-trial/). Alternatively, you could run this pipeline on Google Cloud or AWS. A 14 days free trial license will be automatically applied to your account.
+   If you do not have a Sentieon license/package yet, please feel free to request free trial by filling out the [form](https://www.sentieon.com/home/free-trial/). Alternatively, you could run this pipeline on [Google Cloud](https://cloud.google.com/genomics/docs/tutorials/sentieon) or AWS. A 14 days free trial license will be automatically applied to your account.
    
 2. Location of input files
 
@@ -66,11 +66,26 @@ Sentieon can provide you with a model trained using a subset of the data from th
 ## Performance on Whole Genome Sequencing (WGS) data 
 Here we demonstrate DNAscope's performance on PrecisionFDA Truth Challenge HG002 sample. 
 
+### Software source
+
+Sentieon packages/models are stored on AWS. You could get Sentieon tools by running: 
+
+```bash
+ SENTIEON_VERSION="version-you-want" #For example 201808.07, Find released versions here https://support.sentieon.com/manual/appendix/releasenotes/
+ INSTALL_DIR="your-install-dir"
+ wget -nv -O - "https://s3.amazonaws.com/sentieon-release/software/sentieon-genomics-${SENTIEON_VERSION}.tar.gz" | tar -zxf - -C ${INSTALL_DIR} 
+```
+
+Sentieon Models: 
+```bash
+https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModelBeta0.4a-201808.05.model
+```
+
 ### Data source 
 1. Reference Genome: hs37d5.fa. 
 2. Test Data: NIST HG002 from [PrecisionFDA Truth Challenge](https://precision.fda.gov/challenges/truth).
 3. Model File: Sentieon DNAscope Machine Learning Model version 0.4a.  
-4. Truth VCF and BED file for evaluation: [NIST GIAB project](https://jimb.stanford.edu/giab-resources), version v3.3.2.
+4. Truth VCF and BED file for evaluation: [NIST GIAB project](https://jimb.stanford.edu/giab-resources), version v3.3.2. *(ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/AshkenazimTrio/HG002_NA24385_son/NISTv3.3.2/GRCh37/)*
 
 You could access these data from our google cloud bucket: 
 
