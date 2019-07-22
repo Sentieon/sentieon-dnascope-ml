@@ -128,3 +128,7 @@ bam -> VCF | DNAscope + ModelApply | 1h33m |
 
 To summarize, based on whether you want to start from raw fastq files or already processed deduped bam files, the estimated runtime for a 50X WGS sample would be 4.5h(from fastq) or 1.5h(from bam).  
 
+
+
+
+**If you are interested in other Sentieon Products, please visit www.sentieon.com for more information.**
