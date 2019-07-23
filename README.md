@@ -122,8 +122,8 @@ PrecisionFDA HG002 50X sample on 64-vCPU Machine(n1-highcpu-64):
 
 Pipeline | Step | Wall time | 
 ---|-----| ---------| 
-fastq -> bam | Sentieon-BWA-MEM + dedup | 3h | 
-bam -> VCF | DNAscope + ModelApply | 1h33m | 
+fastq -> bam | Sentieon-BWA-MEM + dedup | 2h50m | 
+bam -> VCF | DNAscope + ModelApply | 1h26m | 
 
 
 To summarize, based on whether you want to start from raw fastq files or already processed deduped bam files, the estimated runtime for a 50X WGS sample would be 4.5h(from fastq) or 1.5h(from bam).  
