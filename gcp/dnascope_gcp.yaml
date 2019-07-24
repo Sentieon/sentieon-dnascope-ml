@@ -1,0 +1,102 @@
+name: dnascope_ml
+description: Sentieon DNAscope + Machine Learning pipeline for germline variants detection
+
+resources:
+  zones:
+  - us-central1-a
+  - us-central1-b
+  - us-central1-c
+  - us-central1-f
+  - us-east1-b
+  - us-east1-c
+  - us-east1-d
+  - us-west1-a
+  - us-west1-b
+  - us-west1-c
+
+  disks:
+  - name: datadisk
+    autoDelete: True
+    type: PERSISTENT_SSD
+
+    mountPoint: /mnt/data
+
+docker:
+  imageName: google/cloud-sdk:slim
+
+  cmd: >
+    echo "Get Sentieon package and set up license" &&
+    mkdir /mnt/data/output &&
+    find /mnt/data/input &&
+    cd /mnt/data/output &&
+    mkdir -p /opt/sentieon/ &&
+    apt-get update && apt-get install -y wget &&
+    wget -nv -O - "https://s3.amazonaws.com/sentieon-release/software/sentieon-genomics-${SENTIEON_VERSION}.tar.gz" | tar -zxf - -C /opt/sentieon/ &&
+    apt-get update && apt-get install -y curl &&
+    curl -OL https://raw.githubusercontent.com/Sentieon/sentieon-google-genomics/master/pipeline_scripts/gen_credentials.py &&
+    python -m pip install requests &&
+    (python gen_credentials.py credentials.json "" & ) &&
+    sleep 5 &&
+    export SENTIEON_AUTH_MECH="GOOGLE" &&
+    export SENTIEON_LICENSE="gcp.sentieon.com:9003" &&
+    export SENTIEON_AUTH_DATA=credentials.json &&
+    SENTIEON_INSTALL_DIR="/opt/sentieon/sentieon-genomics-${SENTIEON_VERSION}" &&
+    echo "Set input variables" &&
+    fastq_1=$FQ1 &&
+    fastq_2=$FQ2 &&
+    fasta="/mnt/data/input/hs37d5.fa" &&
+    dbsnp="/mnt/data/input/dbsnp_138.b37.vcf.gz" &&
+    model="/mnt/data/input/m.model" &&
+    nt=64 &&
+    group="readgroup" &&
+    sample="sample" &&
+    platform="ILLUMINA" &&
+    echo "Sentieon BWA-MEM" &&
+    start=`date +%s` &&
+    ( ( $SENTIEON_INSTALL_DIR/bin/sentieon bwa mem -M -R "@RG\tID:$group\tSM:$sample\tPL:$platform" -t $nt -K 10000000 $fasta <($SENTIEON_INSTALL_DIR/bin/sentieon rcat $fastq_1 ) <($SENTIEON_INSTALL_DIR/bin/sentieon rcat  $fastq_2  ) || echo -n 'error' ) | $SENTIEON_INSTALL_DIR/bin/sentieon util sort -r $fasta -o sorted.bam -t $nt --sam2bam -i -) &&
+    echo "Sentieon Deduplication" &&
+    $SENTIEON_INSTALL_DIR/bin/sentieon driver -t $nt -i sorted.bam --algo LocusCollector --fun score_info score.txt &&
+    $SENTIEON_INSTALL_DIR/bin/sentieon driver -t $nt -i sorted.bam --algo Dedup --rmdup --score_info score.txt --metrics dedup_metrics.txt deduped.bam &&
+    end=`date +%s` &&
+    runtime=$((end-start)) &&
+    echo "Running BWA-MEM + dedup runtime: $runtime" &&
+    echo "Sentieon DNAscope" &&
+    start=`date +%s` &&
+    $SENTIEON_INSTALL_DIR/bin/sentieon driver -r $fasta -t $nt -i deduped.bam  --algo DNAscope -d $dbsnp --pcr_indel_model none --model $model  output-ds.vcf.gz &&
+    echo "Sentieon DNAModelApply" &&
+    $SENTIEON_INSTALL_DIR/bin/sentieon driver -r $fasta -t $nt --algo DNAModelApply --model $model -v output-ds.vcf.gz output-ds-ml.vcf.gz &&
+    end=`date +%s` &&
+    runtime=$((end-start)) &&
+    echo "Running DNAscope + ML runtime: $runtime" &&
+    rm gen_credentials.py &&
+    rm credentials.json*
+
+inputParameters:
+- name: FQ1
+  description: Fastq for a single sample (comma-separated)
+- name: FQ2
+  description: Fastq pairs for a single sample (comma-separated)
+- name: REF
+  description: The refence genome (and assoicated indicies)
+  localCopy:
+      path: input/
+      disk: datadisk
+- name: DBSNP
+  description: A dbSNP file to use during variant calling
+  localCopy:
+      path: input/
+      disk: datadisk
+- name: ML_MODEL
+  description: model file
+  localCopy:
+      path: input/m.model
+      disk: datadisk
+- name: SENTIEON_VERSION
+  description: Sentieon software release version
+
+outputParameters:
+- name: outputPath
+  description: Cloud Storage path for where to samtools output
+  localCopy:
+    path: output/*
+    disk: datadisk
