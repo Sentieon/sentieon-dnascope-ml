@@ -62,6 +62,38 @@ Sentieon can provide you with a model trained using a subset of the data from th
 
 
  If you have any further question, please refer to [Sentieon's Appnotes for DNAscope Machine Learning Model](https://support.sentieon.com/appnotes/dnascope_ml/) and [DNAseq pipeline example script](https://support.sentieon.com/manual/examples/examples/) in the manual.
+ 
+### Running DNAscope in the cloud
+#### Google Cloud Platform(GCP)
+
+1. Set up
+    Please follow steps in "Before you begin" section on Google Cloud page to set up your environment: [Running a Sentieon DNAseq Pipeline](https://cloud.google.com/genomics/docs/tutorials/sentieon)
+
+    Right now, we are granting free-trial license to your account automatically. You will get 14 days free trial beginning when you first run a Sentieon pipeline. 
+
+2. Run the pipeline via `gcloud alpha genomics` [API](https://cloud.google.com/sdk/gcloud/reference/alpha/genomics/). Make necessary changes in `gcp/run.sh` and make sure the pipeline file `gcp/dnascope_gcp.yaml` is in your current working directory. With the current inputs, the command will run the DNAscope + ML pipeline on PrecisionFDA Truth Challenge HG002 sample, which is used to demonstrate model performance in the following section. 
+
+    In `run.sh`:
+
+    ```bash
+    BUCKET="<your bucket>"
+    gcloud alpha genomics pipelines run \
+      --pipeline-file dnascope_gcp.yaml \
+      --inputs SENTIEON_VERSION=201808.07 \
+      --inputs FQ1=gs://sentieon-dnascope-model/data/HG002-NA24385-50x_1.fastq.gz\
+      --inputs FQ2=gs://sentieon-dnascope-model/data/HG002-NA24385-50x_2.fastq.gz\
+      --inputs REF=gs://sentieon-test/pipeline_test/reference/hs37d5.* \
+      --inputs DBSNP=gs://sentieon-test/pipeline_test/reference/dbsnp_138.b37.vcf.* \
+      --inputs ML_MODEL=gs://sentieon-dnascope-model/models/SentieonModelBeta0.4a.model \
+      --outputs outputPath=gs://$BUCKET/output/ \
+      --logging gs://$BUCKET/output/logging \
+      --disk-size datadisk:600 \
+      --cpus 64 \
+      --memory 56
+    ```
+3. Check job status
+
+    You will get a run id after running the pipeline. You could run `gcloud alpha genomics operations describe <YOUR-RUNID>` to check the job status. 
 
 ## Performance on Whole Genome Sequencing (WGS) data 
 Here we demonstrate DNAscope's performance on PrecisionFDA Truth Challenge HG002 sample. 
