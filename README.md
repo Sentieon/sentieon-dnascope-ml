@@ -67,7 +67,7 @@ Sentieon can provide you with a model trained using a subset of the data from th
 #### Google Cloud Platform(GCP)
 
 1. Set up
-    Please follow steps in "Before you begin" section on Google Cloud page to set up your environment: [Running a Sentieon DNAseq Pipeline](https://cloud.google.com/genomics/docs/tutorials/sentieon)
+    Please follow steps in "Before you begin" section on Google Cloud page to set up your environment: [Running a Sentieon DNAseq Pipeline](https://cloud.google.com/genomics/docs/tutorials/sentieon).
 
     Right now, we are granting free-trial license to your account automatically. You will get 14 days free trial beginning when you first run a Sentieon pipeline. 
 
@@ -94,6 +94,8 @@ Sentieon can provide you with a model trained using a subset of the data from th
 3. Check job status
 
     You will get a run id after running the pipeline. You could run `gcloud alpha genomics operations describe <YOUR-RUNID>` to check the job status. 
+    
+If you would like to run other sentieon pipelines on GCP, please refer to our [sentieon-google-genomics repository]( https://github.com/Sentieon/sentieon-google-genomics) for more examples scripts. 
 
 ## Performance on Whole Genome Sequencing (WGS) data 
 Here we demonstrate DNAscope's performance on PrecisionFDA Truth Challenge HG002 sample. 
