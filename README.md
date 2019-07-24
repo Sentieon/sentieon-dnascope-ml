@@ -67,11 +67,14 @@ Sentieon can provide you with a model trained using a subset of the data from th
 #### Google Cloud Platform(GCP)
 
 1. Set up
+
     Please follow steps in "Before you begin" section on Google Cloud page to set up your environment: [Running a Sentieon DNAseq Pipeline](https://cloud.google.com/genomics/docs/tutorials/sentieon).
 
     Right now, we are granting free-trial license to your account automatically. You will get 14 days free trial beginning when you first run a Sentieon pipeline. 
 
-2. Run the pipeline via `gcloud alpha genomics` [API](https://cloud.google.com/sdk/gcloud/reference/alpha/genomics/). Make necessary changes in `gcp/run.sh` and make sure the pipeline file `gcp/dnascope_gcp.yaml` is in your current working directory. With the current inputs, the command will run the DNAscope + ML pipeline on PrecisionFDA Truth Challenge HG002 sample, which is used to demonstrate model performance in the following section. 
+2. Run the pipeline via `gcloud alpha genomics` [API](https://cloud.google.com/sdk/gcloud/reference/alpha/genomics/).
+
+    Make necessary changes in `gcp/run.sh` and make sure the pipeline file `gcp/dnascope_gcp.yaml` is in your current working directory. With the current inputs, the command will run the DNAscope + ML pipeline on PrecisionFDA Truth Challenge HG002 sample, which is used to demonstrate model performance in the following section. 
 
     In `run.sh`:
 
