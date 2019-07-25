@@ -8,12 +8,22 @@
  
 Sentieon DNAscope combines the robust and well-established preprocessing and assembly mathematics of the GATK’s HaplotypeCaller with a machine-learned genotyping model, achieving superb SNP and insertion/deletion accuracy as compared to state-of-the-art tools, while using much reduced computational cost.
 
+## Table of Contents  
+- [Goal of a machine learning model in DNAscope](#goal) 
+- [Highlights](#highlights)
+- [DNAscope machine learning pipeline](#pipeline)
+- [Performance on Whole Genome Sequencing (WGS) data](#performance)
+
+<a name="goal"/>
+
 ## Goal of a machine learning model in DNAscope
 
 
 From Sentieon software version 201808.01 onwards, DNAscope allows you to use a model to perform variant calling with higher accuracy by improving the candidate detection and filtering.
 
 Sentieon can provide you with a model trained using a subset of the data from the GIAB truth-set found in [https://github.com/genome-in-a-bottle](https://github.com/genome-in-a-bottle). The model was created by processing samples HG001 and HG005 through a pipeline consisting of Sentieon BWA-mem alignment and Sentieon deduplication, and using the variant calling results to calibrate a model to fit the truth-set. Sentieon also provides DNAscope model training tool for you to create your model based on your own data. 
+
+<a name="highlights"/>
 
 ## Highlights
 
@@ -22,6 +32,8 @@ Sentieon can provide you with a model trained using a subset of the data from th
 - Cost Reduction
 - Easy Deployment
 - Customizable Model 
+
+<a name="pipeline"/>
 
 ## DNAscope machine learning pipeline
 
@@ -99,6 +111,9 @@ Sentieon can provide you with a model trained using a subset of the data from th
     You will get a run id after running the pipeline. You could run `gcloud alpha genomics operations describe <YOUR-RUNID>` to check the job status. 
     
 If you would like to run other sentieon pipelines on GCP, please refer to our [sentieon-google-genomics repository]( https://github.com/Sentieon/sentieon-google-genomics) for more examples scripts. 
+
+
+<a name="performance"/>
 
 ## Performance on Whole Genome Sequencing (WGS) data 
 Here we demonstrate DNAscope's performance on PrecisionFDA Truth Challenge HG002 sample. 
