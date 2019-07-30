@@ -152,7 +152,7 @@ You could access these data from our google cloud bucket:
 
 ### Variant Calling Performance
 
-We use hap.py ([https://github.com/Illumina/hap.py](https://github.com/Illumina/hap.py)) for variants evaluation.
+We use RTG's vcfeval + hap.py ([https://github.com/Illumina/hap.py](https://github.com/Illumina/hap.py)) for variants evaluation, same comparison methodology as used in precisionFDA Truth Challenge.
 
 ```bash
 HAPPY="/opt/hap.py/bin/hap.py"
