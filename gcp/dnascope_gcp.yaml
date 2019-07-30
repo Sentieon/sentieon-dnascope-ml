@@ -96,7 +96,7 @@ inputParameters:
 
 outputParameters:
 - name: outputPath
-  description: Cloud Storage path for where to samtools output
+  description: Cloud Storage path for where to output
   localCopy:
     path: output/*
     disk: datadisk
