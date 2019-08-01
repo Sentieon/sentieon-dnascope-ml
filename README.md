@@ -177,7 +177,7 @@ Pipeline | Step | Wall time |
 fastq -> bam | Sentieon-BWA-MEM + dedup | 2h50m | 
 bam -> VCF | DNAscope + ModelApply | 1h26m | 
 
-*\*You could futher reduce the bam -> VCF stage runtime to ~1h by adding the `nodecoy.bed` interval file, to avoid computation on complex decoy regions that are usually not needed.*
+*Tips:You could futher reduce the bam -> VCF stage runtime to ~1h by adding the `nodecoy.bed` interval file, to avoid computation on complex decoy regions that are usually not needed.*
 
 
 
