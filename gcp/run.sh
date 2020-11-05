@@ -6,7 +6,7 @@ gcloud alpha genomics pipelines run \
   --inputs FQ2=gs://sentieon-dnascope-model/data/HG002-NA24385-50x_2.fastq.gz\
   --inputs REF=gs://sentieon-test/pipeline_test/reference/hs37d5.* \
   --inputs DBSNP=gs://sentieon-test/pipeline_test/reference/dbsnp_138.b37.vcf.* \
-  --inputs ML_MODEL=gs://sentieon-dnascope-model/models/SentieonModelBeta0.4a.model \
+  --inputs ML_MODEL=gs://sentieon-dnascope-model/models/SentieonModelBeta0.5.model \
   --outputs outputPath=gs://$BUCKET/output/ \
   --logging gs://$BUCKET/output/logging \
   --disk-size datadisk:600 \
