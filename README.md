@@ -136,7 +136,7 @@ https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModelBeta0.4a-20
 ### Data source 
 1. Reference Genome: hs37d5.fa. 
 2. Test Data: NIST HG002 from [PrecisionFDA Truth Challenge](https://precision.fda.gov/challenges/truth).
-3. Model File: Sentieon DNAscope Machine Learning Model version 0.4a.  
+3. Model File: Sentieon DNAscope Machine Learning Model version 0.5.  
 4. Truth VCF and BED file for evaluation: [NIST GIAB project](https://jimb.stanford.edu/giab-resources), version v3.3.2. *(ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/AshkenazimTrio/HG002_NA24385_son/NISTv3.3.2/GRCh37/)*
 
 You could access these data from our google cloud bucket: 
@@ -145,7 +145,7 @@ You could access these data from our google cloud bucket:
  --|--|
  Reference Genome  |[`gs://sentieon-test/pipeline_test/reference/`](https://console.cloud.google.com/storage/browser/sentieon-test/pipeline_test/reference/)   |
  PrecisionFDA Truth Challenge HG002 FASTQs| [`gs://sentieon-dnascope-model/data/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model/data/)|
- DNAscope Model| [`gs://sentieon-dnascope-model/models/SentieonModelBeta0.4a.model`](https://console.cloud.google.com/storage/browser/_details/sentieon-dnascope-model/models/SentieonModelBeta0.4a.model)| 
+ DNAscope Model| [`gs://sentieon-dnascope-model/models/SentieonModelBeta0.5.model`](https://console.cloud.google.com/storage/browser/_details/sentieon-dnascope-model/models/SentieonModelBeta0.5.model)| 
  Truth VCF and Bed files | [`gs://sentieon-dnascope-model/truth/`](https://console.cloud.google.com/storage/browser/sentieon-dnascope-model/truth/) |
 
 
