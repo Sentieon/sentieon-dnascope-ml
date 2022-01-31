@@ -130,7 +130,7 @@ Sentieon packages/models are stored on AWS. You could get Sentieon tools by runn
 
 Sentieon Models: 
 ```bash
-https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModelBeta0.4a-201808.05.model
+https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.0.model
 ```
 
 ### Data source 
