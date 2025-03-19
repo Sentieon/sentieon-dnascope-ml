@@ -49,7 +49,7 @@ Sentieon can provide you with a model trained using a subset of the data from th
    export SENTIEON_INSTALL_DIR=/home/release/sentieon-genomics-201808.06 #your Sentieon package location
    export SENTIEON_LICENSE=/home/bundle/sentieon.lic #your license file location
    ```
-   If you do not have a Sentieon license/package yet, please feel free to request free trial by filling out the [form](https://www.sentieon.com/home/free-trial/). Alternatively, you could run this pipeline on [Google Cloud](https://cloud.google.com/genomics/docs/tutorials/sentieon) or AWS. A 14 days free trial license will be automatically applied to your account.
+   If you do not have a Sentieon license/package yet, please feel free to request a free trial at [sentieon.com](https://www.sentieon.com).
    
 2. Location of input files
 
@@ -74,43 +74,6 @@ Sentieon can provide you with a model trained using a subset of the data from th
 
 
  If you have any further question, please refer to [Sentieon's Appnotes for DNAscope Machine Learning Model](https://support.sentieon.com/appnotes/dnascope_ml/) and [DNAseq pipeline example script](https://support.sentieon.com/manual/examples/examples/) in the manual.
- 
-### Running DNAscope in the cloud
-#### Google Cloud Platform(GCP)
-
-1. Set up
-
-    Please follow steps in "Before you begin" section on Google Cloud page to set up your environment: [Running a Sentieon DNAseq Pipeline](https://cloud.google.com/genomics/docs/tutorials/sentieon).
-
-    Right now, we are granting free-trial license to your account automatically. You will get 14 days free trial beginning when you first run a Sentieon pipeline. 
-
-2. Run the pipeline via `gcloud alpha genomics` [API](https://cloud.google.com/sdk/gcloud/reference/alpha/genomics/).
-
-    Make necessary changes in `gcp/run.sh` and make sure the pipeline file `gcp/dnascope_gcp.yaml` is in your current working directory. With the current inputs, the command will run the DNAscope + ML pipeline on PrecisionFDA Truth Challenge HG002 sample, which is used to demonstrate model performance in the following section. 
-
-    In `run.sh`:
-
-    ```bash
-    BUCKET="<your bucket>"
-    gcloud alpha genomics pipelines run \
-      --pipeline-file dnascope_gcp.yaml \
-      --inputs SENTIEON_VERSION=201808.07 \
-      --inputs FQ1=gs://sentieon-dnascope-model/data/HG002-NA24385-50x_1.fastq.gz\
-      --inputs FQ2=gs://sentieon-dnascope-model/data/HG002-NA24385-50x_2.fastq.gz\
-      --inputs REF=gs://sentieon-test/pipeline_test/reference/hs37d5.* \
-      --inputs DBSNP=gs://sentieon-test/pipeline_test/reference/dbsnp_138.b37.vcf.* \
-      --inputs ML_MODEL=gs://sentieon-dnascope-model/models/SentieonModelBeta0.4a.model \
-      --outputs outputPath=gs://$BUCKET/output/ \
-      --logging gs://$BUCKET/output/logging \
-      --disk-size datadisk:600 \
-      --cpus 64 \
-      --memory 56
-    ```
-3. Check job status
-
-    You will get a run id after running the pipeline. You could run `gcloud alpha genomics operations describe <YOUR-RUNID>` to check the job status. 
-    
-If you would like to run other sentieon pipelines on GCP, please refer to our [sentieon-google-genomics repository]( https://github.com/Sentieon/sentieon-google-genomics) for more examples scripts. 
 
 
 <a name="performance"/>
@@ -168,22 +131,6 @@ SNP   |3046378 | **1459** | **700** | 0.999521 | 0.99977 | **99.9646%** | 99.958
 INDEL |463754| **1010** | **685** | 0.997827 | 0.998585 | **99.8206%** | 99.4009%|
 
 *\*PrecisionFDA Truth Challege Result taken from https://precision.fda.gov/challenges/truth/results*
-
-###  Runtime 
-PrecisionFDA HG002 50X sample on 64-vCPU Machine(n1-highcpu-64): 
-
-Pipeline | Step | Wall time | 
----|-----| ---------| 
-fastq -> bam | Sentieon-BWA-MEM + dedup | 2h50m | 
-bam -> VCF | DNAscope + ModelApply | 1h26m | 
-
-*Tips:You could futher reduce the bam -> VCF stage runtime to ~1h by adding the `nodecoy.bed` interval file, to avoid computation on complex decoy regions that are usually not needed.*
-
-
-
-To summarize, based on whether you want to start from raw fastq files or already processed deduped bam files, the estimated runtime for a 50X WGS sample would be 4.5h(from fastq) or 1.5h(from bam).  
-
-
 
 ##
 
